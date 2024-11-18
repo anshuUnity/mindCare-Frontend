@@ -12,7 +12,7 @@ interface ProfileHeaderProps {
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({ name, gender, age, email }) => {
   return (
     <View style={styles.headerContainer}>
-      <Image source={{ uri: 'https://example.com/profile-pic' }} style={styles.avatar} />
+      <Image source={require('../assets/images/avatar.png')} style={styles.avatar} />
       <Text style={styles.profileName}>{name}</Text>
       <View style={styles.infoRow}>
         <FontAwesome name={gender === 'female' ? 'venus' : 'mars'} size={16} color="white" />
@@ -28,7 +28,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ name, gender, age, email 
 const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: '#8bc34a', // Match the green background color
-    padding: 20,
+    padding: 100,
     alignItems: 'center',
   },
   avatar: {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Image, TouchableWithoutFeedback, Keyboard, ActivityIndicator } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import Toast from 'react-native-toast-message';
-import { BASE_URL } from '../constants/api'; // Assuming the base URL is saved in the constants file
+import { BASE_URL } from '@/constants/api'; // Assuming the base URL is saved in the constants file
 import * as SecureStore from 'expo-secure-store';
 
 export default function LoginScreen() {
@@ -42,6 +42,7 @@ export default function LoginScreen() {
         });
       } else {
         await SecureStore.setItemAsync('userToken', data.token);
+        await SecureStore.setItemAsync('userProfile', JSON.stringify(data.profile));
         // Show success toast and handle token if needed
         Toast.show({
           type: 'success',

@@ -40,6 +40,7 @@ export default function Index() {
   }
 
   // If the token and profile are found, redirect to the Home screen, otherwise to Signup/Login
+  console.log(profile.user.first_name, "GENDER");
   
   if (!isLoading) {
     if (hasToken && profile) {

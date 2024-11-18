@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Image, TouchableWithoutFeedback, Keyboard, ActivityIndicator } from 'react-native';
 import { Link, useNavigation, useRouter } from 'expo-router';
 import Toast from 'react-native-toast-message';
-import { BASE_URL } from '../constants/api';
+import { BASE_URL } from '@/constants/api';
 
 
 export default function SignupScreen() {
