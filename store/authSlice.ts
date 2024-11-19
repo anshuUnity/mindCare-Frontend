@@ -20,12 +20,20 @@ const authSlice = createSlice({
     setProfile: (state, action: PayloadAction<any>) => {
       state.profile = action.payload;
     },
-    clearAuth: (state) => {
+    updateProfile: (state, action: PayloadAction<any>) => {
+      if (state.profile) {
+        state.profile = {
+          ...state.profile,
+          ...action.payload,
+        };
+      }
+    },
+    logout: (state) => { // Renamed clearAuth to logout for clarity
       state.token = null;
       state.profile = null;
     },
   },
 });
 
-export const { setToken, setProfile, clearAuth } = authSlice.actions;
+export const { setToken, setProfile, updateProfile, logout } = authSlice.actions; // Exporting logout instead of clearAuth
 export default authSlice.reducer;

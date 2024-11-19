@@ -1,4 +1,3 @@
-// Import statements
 import React, { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import { ActivityIndicator, View } from 'react-native';
@@ -18,15 +17,33 @@ function AppContent() {
   const token = useSelector((state: RootState) => state.auth.token);
   const profile = useSelector((state: RootState) => state.auth.profile);
 
+  const calculateAge = (dob: string) => {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
   useEffect(() => {
     const checkToken = async () => {
       try {
         const token = await SecureStore.getItemAsync('userToken');
-        const profileData = await SecureStore.getItemAsync('userProfile');
+        const profileDataString = await SecureStore.getItemAsync('userProfile');
 
-        if (token && profileData) {
+        if (token && profileDataString) {
+          let profileData = JSON.parse(profileDataString);
+          
+          // If profileData contains dob, calculate age and add it to profileData
+          if (profileData.dob) {
+            profileData.age = calculateAge(profileData.dob);
+          }
+
           dispatch(setToken(token));
-          dispatch(setProfile(JSON.parse(profileData)));
+          dispatch(setProfile(profileData));
         }
       } catch (error) {
         console.error('Error fetching token:', error);
