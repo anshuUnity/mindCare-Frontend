@@ -4,9 +4,14 @@ import { Link, useRouter } from 'expo-router';
 import Toast from 'react-native-toast-message';
 import { BASE_URL } from '@/constants/api'; // Assuming the base URL is saved in the constants file
 import * as SecureStore from 'expo-secure-store';
+import { Provider, useDispatch } from 'react-redux';
 
-export default function LoginScreen() {
+import { setProfile, setToken } from '@/store/authSlice';
+import { store } from '@/store';
+
+const LoginScreenMain= () => {
   const router = useRouter(); // Use router for navigation
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -41,6 +46,8 @@ export default function LoginScreen() {
           text2: data.non_field_errors ? data.non_field_errors[0] : 'Invalid credentials',
         });
       } else {
+        console.log(data.token, "TOKEN");
+        
         await SecureStore.setItemAsync('userToken', data.token);
         await SecureStore.setItemAsync('userProfile', JSON.stringify(data.profile));
         // Show success toast and handle token if needed
@@ -48,7 +55,8 @@ export default function LoginScreen() {
           type: 'success',
           text1: 'Login Successful',
         });
-
+        dispatch(setToken(data.token));
+        dispatch(setProfile(JSON.stringify(data.profile)));
         router.replace('/home');
         // You can store the token or handle redirection here
         // For now, we'll just stay on the login screen
@@ -105,7 +113,7 @@ export default function LoginScreen() {
         </TouchableOpacity>
 
         <Text style={styles.footerText}>
-          Don't have an account? <Link href="/signup" style={styles.linkText}>Sign Up</Link>
+          Don't have an account? <Link replace href="/signup" style={styles.linkText}>Sign Up</Link>
         </Text>
 
         {/* Toast notification component */}
@@ -176,3 +184,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+
+export default function LoginScreen(){
+  return (
+      <Provider store={store}>
+          <LoginScreenMain/>
+      </Provider>
+  )
+};

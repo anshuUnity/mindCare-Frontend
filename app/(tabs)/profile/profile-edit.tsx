@@ -80,7 +80,7 @@ const EditProfileScreen: React.FC = () => {
         Alert.alert('Success', 'Profile updated successfully!');
       } else if (response.status === 403) {
         Alert.alert('Session Expired', 'Please log in again.');
-        await SecureStore.deleteItemAsync('token');
+        await SecureStore.deleteItemAsync('userToken');
         dispatch(logout());
         router.replace('/Login');
       } else {
