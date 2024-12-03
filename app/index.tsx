@@ -35,7 +35,6 @@ function AppContent() {
         const profileDataString = await SecureStore.getItemAsync('userProfile');
 
         if (token && profileDataString) {
-          console.log(token, "TOKEN");
           
           let profileData = JSON.parse(profileDataString);
           

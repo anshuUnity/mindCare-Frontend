@@ -46,7 +46,6 @@ const LoginScreenMain= () => {
           text2: data.non_field_errors ? data.non_field_errors[0] : 'Invalid credentials',
         });
       } else {
-        console.log(data.token, "TOKEN");
         
         await SecureStore.setItemAsync('userToken', data.token);
         await SecureStore.setItemAsync('userProfile', JSON.stringify(data.profile));
