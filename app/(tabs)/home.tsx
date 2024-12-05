@@ -7,6 +7,8 @@ import QuoteCard from '@/components/HomeScreen/QuoteCard';
 import YouTube from 'react-native-youtube-iframe';
 import VideoCard from '@/components/HomeScreen/VideoCard';
 import YoutubeIframe from 'react-native-youtube-iframe';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 const YOUTUBE_API_KEY = 'AIzaSyBeZsmls9RqS2grxhRqmZ2ODaWMKLoobxs';
 const CHANNEL_ID = '@motiversity';
@@ -15,11 +17,11 @@ const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search';
 const HomeScreen: React.FC = () => {
   const router = useRouter();
   const [quote, setQuote] = useState<string>(''); // State to store the quote
+  const profile = useSelector((state: RootState) => state.auth.profile);
   const [loading, setLoading] = useState<boolean>(true); // State to handle loading
   const [videos, setVideos] = useState<any[]>([]); // State to store YouTube videos
   const [videoLoading, setVideoLoading] = useState<boolean>(true);
   const [currentVideoId, setCurrentVideoId] = useState<string | null>(null); // State for currently selected video ID
-  console.log(currentVideoId);
   
   // Fetch quote on component mount
   useEffect(() => {
@@ -46,15 +48,19 @@ const HomeScreen: React.FC = () => {
     const fetchVideos = async () => {
       try {
         setVideoLoading(true);
-    
+  
+        // Select a random concern
+        const randomConcern =
+          profile.concerns[Math.floor(Math.random() * profile.concerns.length)]?.name || 'mental health';
+  
         const params = new URLSearchParams({
           part: 'snippet',
-          q: 'mental health',
+          q: randomConcern, // Use the random concern as the search query
           type: 'video',
           maxResults: '10',
           key: YOUTUBE_API_KEY, // Replace with your actual YouTube API key
         });
-    
+  
         const response = await fetch(`${YOUTUBE_API_URL}?${params}`);
         if (!response.ok) throw new Error('Failed to fetch videos');
         const data = await response.json();

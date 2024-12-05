@@ -71,7 +71,7 @@ const ChatScreenMain = () => {
   
         setMessages((prevMessages) => [
           ...prevMessages,
-          ...fetchedMessages.reverse(), // Reverse to show oldest messages first
+          ...fetchedMessages
         ]);
         setNextPage(data.next ? page + 1 : null); // Update nextPage if there's more data
       } else if (response.status === 403) {

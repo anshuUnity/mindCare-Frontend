@@ -9,7 +9,7 @@ import { Provider, useDispatch } from 'react-redux';
 import { setProfile, setToken } from '@/store/authSlice';
 import { store } from '@/store';
 
-const LoginScreenMain= () => {
+const LoginScreenMain = () => {
   const router = useRouter(); // Use router for navigation
   const dispatch = useDispatch();
 
@@ -46,7 +46,6 @@ const LoginScreenMain= () => {
           text2: data.non_field_errors ? data.non_field_errors[0] : 'Invalid credentials',
         });
       } else {
-        
         await SecureStore.setItemAsync('userToken', data.token);
         await SecureStore.setItemAsync('userProfile', JSON.stringify(data.profile));
         // Show success toast and handle token if needed
@@ -57,8 +56,6 @@ const LoginScreenMain= () => {
         dispatch(setToken(data.token));
         dispatch(setProfile(JSON.stringify(data.profile)));
         router.replace('/home');
-        // You can store the token or handle redirection here
-        // For now, we'll just stay on the login screen
       }
     } catch (error) {
       // Handle network or other errors
@@ -115,12 +112,16 @@ const LoginScreenMain= () => {
           Don't have an account? <Link replace href="/signup" style={styles.linkText}>Sign Up</Link>
         </Text>
 
+        <Text style={styles.footerText}>
+          Forgot your password? <Link replace href="/forgotPassword" style={styles.linkText}>Reset Password</Link>
+        </Text>
+
         {/* Toast notification component */}
         <Toast />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
